@@ -16,7 +16,7 @@ app.get('/json', function(req, res) {
         response = response.toUpperCase();
        console.log('1st end if', response);
     }else{
-        response = response.toLowerCase();
+        response = "Hello json";
       console.log('2nd end if', response);
     }
 

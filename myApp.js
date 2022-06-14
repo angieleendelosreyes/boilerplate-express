@@ -16,7 +16,28 @@ app.use('/',
           
           // express.static(__dirname + '/now')
   
+});
+
+app.get('/name', function(req, res, next){
+  console.log('use',req.query)
+  var { first: firstName, last: lastName } = req.query;
+  res.json({
+    // name: `${firstName} ${lastName}`
+    name: firstName + " " + lastName
+  });
 })
+//   .get('/name', function(req, res, next){
+//   console.log('get',req.query)
+//   next();
+// }).post('/name', function(req, res, next){
+//   console.log('post',req.query)
+//   res.json({ 'name': req.query.last + ' '+ req.query.last})
+// })
+
+app.get('/:word/echo', function(req, res, next){
+  console.log('req.params.word',req.params.word)
+  res.json({"echo": req.params.word})
+});
 
 app.get('/now', function(req, res, next) {
   console.log('now get');

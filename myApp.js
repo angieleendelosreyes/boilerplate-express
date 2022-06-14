@@ -1,9 +1,11 @@
 let express = require('express');
 let app = express();
 require('dotenv').config();
+
+let bodyParser = require('body-parser');
 var response = "Hello json";
 
-app.use('/', 
+app.use('/', bodyParser.urlencoded({ extended: false }),bodyParser.json(),
   //       function(req, res) {
   //   console.log('Hello Express');
   //   res.sendFile(__dirname + '/json');
@@ -12,11 +14,34 @@ app.use('/',
   console.log("I'm a middleware...");
           console.log(req.method, req.path, " - " 
                       ,req.ip);
+
+          // bodyParser.urlencoded({extended: false});
+          // console.log('bodyParser',bodyParser.urlencoded({extended: false}));
           next();
           
           // express.static(__dirname + '/now')
   
 });
+
+app.get('/name', function(req, res, next){
+  console.log('use >>>' )
+  var { first: firstName, last: lastName } = req.query;
+  res.json({
+    // name: `${firstName} ${lastName}`
+    // name: firstName + " " + lastName
+    name: "angie"
+  });
+})
+  app.post('/name', function(req, res, next){
+  // console.log('use',req.body)
+  var { first: firstName, last: lastName } = req.body;
+  res.json({
+    name: `${firstName} ${lastName}`
+    // name: firstName + " " + lastName
+    // name: "angie"
+  });
+  
+})
 
 app.get('/name', function(req, res, next){
   console.log('use',req.query)
@@ -26,13 +51,7 @@ app.get('/name', function(req, res, next){
     name: firstName + " " + lastName
   });
 })
-//   .get('/name', function(req, res, next){
-//   console.log('get',req.query)
-//   next();
-// }).post('/name', function(req, res, next){
-//   console.log('post',req.query)
-//   res.json({ 'name': req.query.last + ' '+ req.query.last})
-// })
+
 
 app.get('/:word/echo', function(req, res, next){
   console.log('req.params.word',req.params.word)
@@ -51,10 +70,6 @@ app.get('/now', function(req, res, next) {
        );
 
 app.get('/json', function(req, res) {
-  // console.log(req.method," ", req.path, " - " 
-  //                     ,req.ip);
-  //   console.log('Hello Express ' + process.env.MESSAGE_STYLE);
-
     if(process.env.MESSAGE_STYLE.toLowerCase() === 'uppercase' || process.env.MESSAGE_STYLE.toLowerCase() === 'allcaps'){
       // console.log('1st if');
         response = response.toUpperCase();
